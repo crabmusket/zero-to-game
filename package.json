@@ -1,0 +1,16 @@
+{
+  "name": "zero-to-game",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/eightyeight/zero-to-game.git"
+  },
+
+  "devDependencies": {
+    "live-server": "~0.5.0"
+  },
+
+  "scripts": {
+    "start": "live-server"
+  }
+}
