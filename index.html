@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav navbar-left">
                         <li>
                             <a href="" data-toggle="modal" data-target="#aboutModal">About</a>
                         </li>
@@ -51,6 +51,12 @@
                             </ul>
                         </li>
                         -->
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="" data-toggle="modal" data-target="#settingsModal">Settings <i class="fa fa-lg fa-cog"></i></a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -96,6 +102,24 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="settingsModalLabel">Settings</h4>
+                    </div>
+
+                    <div class="modal-body">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
                     </div>
                 </div>
             </div>
