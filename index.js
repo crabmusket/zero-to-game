@@ -1,18 +1,46 @@
 knowledgeMap.create({
   graph: {
     concepts: [{
-      id: 'knowledge-map',
-      name: 'What is a knowledge map?',
-      content: [{
-        text: "Knowledge maps are like a roadmap for pieces of knowledge. They can be used to show others how to navigate from their current set of knowledge to a particular goal. Or they can be used to find people who know something you haven't learnt yet.",
-      }]
+      id: 'setup',
+      name: 'Get set up',
+      content: {
+        description: 'Download and run a binary distribution of Torque 3D.'
+      }
     }, {
-      id: 'viewing',
-      name: 'Viewing a knowledge map',
-      dependencies: ['knowledge-map'],
-      content: [{
-        text: "You're doing it right now! Each of the labelled points on the page is called a 'concept' and the arrows joining them are called 'dependencies'. Concepts are pieces of information that can be learned if you have learned all of the concepts which point to it. That is, if you want to learn a concept learn all of its dependencies!",
-      }]
+      id: 'basic-ts',
+      name: 'Basic TorqueScript',
+      dependencies: ['setup'],
+      content: {
+        description: 'Learn the basics of TorqueScript, the language you\'ll use throughout this series, and how the example application is structured.'
+      }
+    }, {
+      id: 'objects',
+      name: 'Creating objects',
+      dependencies: ['basic-ts'],
+      content: {
+        description: 'Load some simple objects into the game world.'
+      }
+    }, {
+      id: 'httpobject',
+      name: 'Talk to a server',
+      dependencies: ['basic-ts'],
+      content: {
+        description: 'Use the `HTTPObject` class to interact with a remote server.'
+      }
+    }, {
+      id: 'keybinds',
+      name: 'Key bindings',
+      dependencies: ['basic-ts'],
+      content: {
+        description: 'Use an `ActionMap` to capture keyboard and mouse input.'
+      }
+    }, {
+      id: 'free-camera',
+      name: 'Free camera',
+      dependencies: ['objects', 'keybinds'],
+      content: {
+        description: 'Fly around the level as a floating eyeball!'
+      }
     }]
   },
   layout: {
