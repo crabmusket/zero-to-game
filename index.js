@@ -15,5 +15,8 @@ knowledgeMap.create({
       }]
     }]
   },
+  layout: {
+    direction: 'BT'
+  },
   plugins: [],
 });
