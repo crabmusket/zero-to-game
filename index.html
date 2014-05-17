@@ -29,9 +29,10 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="/news">News</a>
+                            <a href="" data-toggle="modal" data-target="#aboutModal">About</a>
                         </li>
 
+                        <!--
                         <li class="dropdown">
                             <a href="/engine" class="dropdown-toggle" data-toggle="dropdown">Engine</a>
                             <ul class="dropdown-menu">
@@ -49,14 +50,60 @@
                                 <li><a href="/start#tutorials">Tutorials</a></li>
                             </ul>
                         </li>
+                        -->
                     </ul>
                 </div>
             </div>
         </div>
 
+        <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="aboutModalLabel">Zero to Game</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        Ðā wæs on burgum Bēowulf Scyldinga,<br />
+                        lēof lēod-cyning, longe þrāge<br />
+                        55folcum gefrǣge (fæder ellor hwearf,<br />
+                        aldor of earde), oþ þæt him eft onwōc<br />
+                        hēah Healfdene; hēold þenden lifde,<br />
+                        gamol ond gūð-rēouw, glæde Scyldingas.<br />
+                        Ðǣm feower bearn forð gerīmed<br />
+                        60in worold wōcun, weoroda rǣswa<br />
+                        Heorogār, ond Hrōðgār ond Hālga til;<br />
+                        hȳrde ic, þæt Elan cwēn [Ongenþēowes wæs][1]<br />
+                        Heaðo-Scilfinges[2] heals-gebedda.<br />
+                        Þā wæs Hrōðgāre here-spēd gyfen,<br />
+                        65wīges weorð-mynd, þæt him his wine-māgas<br />
+                        georne hȳrdon, oðð þæt sēo geogoð gewēox,<br />
+                        mago-driht micel. Him on mōd bearn,<br />
+                        þæt heal-reced[3] hātan wolde,<br />
+                        *medo-ærn micel men gewyrcean, Fol. 130b.<br />
+                        70þon[n]e yldo bearn ǣfre gefrūnon,<br />
+                        ond þǣr on innan eall gedǣlan<br />
+                        geongum ond ealdum, swylc him God sealde,<br />
+                        būton folc-scare ond feorum gumena.<br />
+                        Ðā ic wīde gefrægn weorc gebannan<br />
+                        75manigre mǣgþe geond þisne middan-geard,<br />
+                        folc-stede frætwan. Him on fyrste gelomp<br />
+                        ǣdre mid yldum, þæt hit wearð eal gearo,<br />
+                        heal-ærna mǣst; scōp him Heort naman,<br />
+                        sē þe his wordes geweald wīde hæfde.<br />
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script type="text/javascript" src="./js/knowledge-map.js"></script>
-        <script type="text/javascript" src="./index.js"></script>
         <script type="text/javascript" src="./js/jquery-1.11.0.min.js"></script>
         <script type="text/javascript" src="./js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="./index.js"></script>
     </body>
 </html>
