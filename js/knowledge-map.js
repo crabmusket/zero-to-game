@@ -14224,11 +14224,29 @@ function setupBurgers(kg) {
 };
 
 module.exports = {
-  name: 'default-nodes',
+  name: 'default-appearance',
   run: setupBurgers,
 };
 
 },{"d3":3}],53:[function(require,module,exports){
+function setupClickEvents(kg) {
+  kg.onEvent('renderGraph', function(e) {
+    e.nodes.select('text')
+      .on('click', function (conceptId) {
+        kg.postEvent({
+          type: 'clickConcept',
+          concept: kg.graph.node(conceptId).concept
+        });
+      });
+  });
+};
+
+module.exports = {
+  name: 'click-events',
+  run: setupClickEvents
+};
+
+},{}],54:[function(require,module,exports){
 var d3 = require('d3');
 var modal = require('../node_modules/PicoModal/src/picoModal.js');
 
@@ -14435,7 +14453,7 @@ module.exports = {
   run: setupModals,
 };
 
-},{"../node_modules/PicoModal/src/picoModal.js":1,"d3":3}],54:[function(require,module,exports){
+},{"../node_modules/PicoModal/src/picoModal.js":1,"d3":3}],55:[function(require,module,exports){
 var d3 = require('d3');
 
 /*
@@ -14599,7 +14617,7 @@ module.exports = {
   run: setupEditing
 };
 
-},{"d3":3}],55:[function(require,module,exports){
+},{"d3":3}],56:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -14905,11 +14923,12 @@ var api = {
   },
 
   plugins: {
-    'default-nodes': require('./burger-appearance-plugin.js'),
+    'default-appearance': require('./burger-appearance-plugin.js'),
     'links': require('./links-plugin.js'),
     'editing': require('./editing-plugin.js'),
     'modals': require('./modals-plugin.js'),
     'editing-modals': require('./editing-modals-plugin.js'),
+    'click-events': require('./click-events-plugin.js'),
   },
 
   registerPlugin: function(plugin) {
@@ -14923,7 +14942,7 @@ global.knowledgeMap = api;
 module.exports = api;
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./burger-appearance-plugin.js":52,"./editing-modals-plugin.js":53,"./editing-plugin.js":54,"./links-plugin.js":56,"./modals-plugin.js":57,"d3":3,"dagre-d3":4}],56:[function(require,module,exports){
+},{"./burger-appearance-plugin.js":52,"./click-events-plugin.js":53,"./editing-modals-plugin.js":54,"./editing-plugin.js":55,"./links-plugin.js":57,"./modals-plugin.js":58,"d3":3,"dagre-d3":4}],57:[function(require,module,exports){
 var d3 = require('d3');
 
 function addNodeLinks(graph, nodes) {
@@ -14962,7 +14981,7 @@ module.exports = {
   run: setupLinks,
 };
 
-},{"d3":3}],57:[function(require,module,exports){
+},{"d3":3}],58:[function(require,module,exports){
 var d3 = require('d3');
 var modal = require('../node_modules/PicoModal/src/picoModal.js');
 
@@ -15031,4 +15050,4 @@ module.exports = {
   run: setupModals,
 };
 
-},{"../node_modules/PicoModal/src/picoModal.js":1,"d3":3}]},{},[55])
+},{"../node_modules/PicoModal/src/picoModal.js":1,"d3":3}]},{},[56])

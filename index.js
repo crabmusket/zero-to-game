@@ -1,4 +1,4 @@
-knowledgeMap.create({
+var map = knowledgeMap.create({
   graph: {
     concepts: [{
       id: 'setup',
@@ -46,5 +46,11 @@ knowledgeMap.create({
   layout: {
     direction: 'BT'
   },
-  plugins: [],
+  plugins: ['click-events'],
+});
+
+map.onEvent('clickConcept', function(e) {
+  var c = e.concept;
+  $('#current-concept h2').text(c.name);
+  $('#current-concept p').text(c.content.description);
 });

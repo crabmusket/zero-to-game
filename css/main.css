@@ -44,6 +44,14 @@ svg {
   border-radius: 4px;
 }
 
+#current-concept .clear p {
+  margin: 0;
+}
+
+#current-concept {
+  padding-bottom: 0.5em;
+}
+
 .goals > li {
   margin-bottom: 0.5em;
   cursor: pointer;
