@@ -14913,6 +14913,8 @@ Public API for the knowledge-map library
 
 */
 var api = {
+  d3: d3,
+
   /*
 
   Create a knowledge map display that layouts out the entire graph.

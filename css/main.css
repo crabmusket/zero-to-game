@@ -18,6 +18,10 @@ svg:active {
   cursor: move;
 }
 
+svg .warning {
+  fill: red;
+}
+
 .sidebar {
   width: 300px;
   min-height: 100px;
