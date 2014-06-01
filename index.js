@@ -9,11 +9,14 @@ knowledgeMap.registerPlugin({
         var content = concept.content;
         if(!content || !content.data) {
           d3.select(this).select('g').append('text')
-            .classed('warning', true)
-            .attr('title', 'No content here yet!')
+            .classed('danger', true)
             .attr('dy', '1em')
             .attr('x', '-20')
-            .text('(!)');
+            .text('(!)')
+            .on('click', function(id) {
+            })
+            .append('title')
+              .text( 'No content here yet!');
         }
       });
     });
@@ -41,6 +44,20 @@ var map = knowledgeMap.create({
         description: 'Learn the basics of TorqueScript, the language you\'ll use throughout this series, and how the example application is structured.'
       }
     }, {
+      id: 'datablocks',
+      name: 'Datablocks',
+      dependencies: ['objects'],
+      content: {
+        description: 'Datablocks are a fundamental concept in Torque 3D. Learn how to use them when you create all sorts of objects.'
+      }
+    }, {
+      id: 'httpobject',
+      name: 'Talk to a server',
+      dependencies: ['objects'],
+      content: {
+        description: 'Use the `HTTPObject` class to interact with a remote server.'
+      }
+    }, {
       id: 'basic-hud',
       name: 'Edit the HUD',
       dependencies: ['objects'],
@@ -57,30 +74,30 @@ var map = knowledgeMap.create({
     }, {
       id: 'basic-gui',
       name: 'Make a main menu',
-      dependencies: ['basic-hud', 'startup'],
+      dependencies: ['startup'],
       content: {
         description: 'Start your game in a main menu, not a 3D world view.'
       }
     }, {
-      id: 'convexshape',
-      name: 'Block geometry',
-      dependencies: ['objects'],
+      id: 'rts-control',
+      name: 'RTS unit control',
+      dependencies: ['basic-hud', 'aiplayer', 'rts-camera'],
       content: {
-        description: 'Make a blocky game world using code.'
+        description: 'Select and control NPCs from an overhead camera.'
       }
     }, {
-      id: 'httpobject',
-      name: 'Talk to a server',
-      dependencies: ['objects'],
+      id: 'aiplayer',
+      name: 'Non-player characters',
+      dependencies: ['datablocks'],
       content: {
-        description: 'Use the `HTTPObject` class to interact with a remote server.'
+        description: 'Use the `AIPlayer` class to create NPCs that wander randomly.'
       }
     }, {
-      id: 'startup',
-      name: 'Understanding startup',
-      dependencies: ['basic-ts'],
+      id: 'geometry',
+      name: 'Build a level',
+      dependencies: ['objects'],
       content: {
-        description: 'Get to know how the engine startup sequence works and why `main.cs` looks the way it does.'
+        description: 'Build level geometry by importing shapes from Blender, or using the built-in box primitive maker.'
       }
     }, {
       id: 'objects',
@@ -88,6 +105,13 @@ var map = knowledgeMap.create({
       dependencies: ['basic-ts'],
       content: {
         description: 'Load some simple objects into the game world.'
+      }
+    }, {
+      id: 'callbacks',
+      name: 'Collisions',
+      dependencies: ['basic-ts'],
+      content: {
+        description: ''
       }
     }, {
       id: 'keybinds',
@@ -99,20 +123,41 @@ var map = knowledgeMap.create({
     }, {
       id: 'free-camera',
       name: 'Free camera',
-      dependencies: ['objects', 'keybinds'],
+      dependencies: ['datablocks', 'keybinds'],
       content: {
         description: 'Fly around the level as a floating eyeball!'
       }
     }, {
+      id: 'items',
+      name: 'Items',
+      dependencies: ['datablocks', 'callbacks'],
+      content: {
+        description: 'The `Item` class lets you create useful objects for players to collect.'
+      }
+    }, {
+      id: 'rts-camera',
+      name: 'RTS camera',
+      dependencies: ['free-camera'],
+      content: {
+        description: 'Make a moving overhead camera.'
+      }
+    }, {
       id: 'fps-player',
-      name: 'The `Player` class',
+      name: 'First-person player',
       dependencies: ['free-camera'],
       content: {
         description: 'Set up a first-person avatar to run around the level.'
       }
     }, {
+      id: 'startup',
+      name: 'Understanding startup',
+      dependencies: ['basic-ts'],
+      content: {
+        description: 'Get to know how the engine startup sequence works and why `main.cs` looks the way it does.'
+      }
+    }, {
       id: 'basic-rift',
-      name: 'Oculus Rift basics',
+      name: 'Oculus Rift',
       dependencies: ['compiling', 'basic-ts'],
       content: {
         description: 'Set up integeration with the Oculus Rift.'
@@ -129,6 +174,34 @@ var map = knowledgeMap.create({
       dependencies: ['networking'],
       content: {
         description: 'Make your game visible to other clients on the same LAN.'
+      }
+    }, {
+      id: 'navmesh',
+      name: 'Navmeshes',
+      dependencies: ['aiplayer', 'geometry'],
+      content: {
+        description: 'Use Recast navmeshes to help your minions navigate around obstacles.'
+      }
+    }, {
+      id: 'images',
+      name: 'Weapon images',
+      dependencies: ['fps-player'],
+      content: {
+        description: '`ShapeBaseImage`s allow you to mount items like weapons and equipment to your characters.'
+      }
+    }, {
+      id: 'basic-fps',
+      name: 'A simple FPS',
+      dependencies: ['geometry', 'images', 'items'],
+      content: {
+        description: 'Create a very simple FPS game with enemies that try to chase and attack you.'
+      }
+    }, {
+      id: 'basic-rts',
+      name: 'A simple RTS',
+      dependencies: ['rts-control', 'navmesh', 'items'],
+      content: {
+        description: 'Create a very simple FPS game with enemies that try to chase and attack you.'
       }
     }]
   },
