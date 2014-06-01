@@ -37,6 +37,19 @@ var map = knowledgeMap.create({
         description: 'Download and run a binary distribution of Torque 3D.'
       }
     }, {
+      id: 'compiling',
+      name: 'Compile the engine',
+      content: {
+        description: 'Compile Torque from its source code.'
+      }
+    }, {
+      id: 'basic-rift',
+      name: 'Oculus Rift',
+      dependencies: ['compiling', 'basic-ts'],
+      content: {
+        description: 'Set up integeration with the Oculus Rift.'
+      }
+    }, {
       id: 'basic-ts',
       name: 'Basic TorqueScript',
       dependencies: ['setup'],
@@ -44,25 +57,11 @@ var map = knowledgeMap.create({
         description: 'Learn the basics of TorqueScript, the language you\'ll use throughout this series, and how the example application is structured.'
       }
     }, {
-      id: 'datablocks',
-      name: 'Datablocks',
-      dependencies: ['objects'],
-      content: {
-        description: 'Datablocks are a fundamental concept in Torque 3D. Learn how to use them when you create all sorts of objects.'
-      }
-    }, {
       id: 'httpobject',
       name: 'Talk to a server',
       dependencies: ['objects'],
       content: {
         description: 'Use the `HTTPObject` class to interact with a remote server.'
-      }
-    }, {
-      id: 'basic-hud',
-      name: 'Edit the HUD',
-      dependencies: ['objects'],
-      content: {
-        description: 'Add a simple heads-up display on top of the game display'
       }
     }, {
       id: 'networking',
@@ -81,7 +80,7 @@ var map = knowledgeMap.create({
     }, {
       id: 'rts-control',
       name: 'RTS unit control',
-      dependencies: ['basic-hud', 'aiplayer', 'rts-camera'],
+      dependencies: ['basic-hud', 'pathfinding'],
       content: {
         description: 'Select and control NPCs from an overhead camera.'
       }
@@ -100,6 +99,20 @@ var map = knowledgeMap.create({
         description: 'Build level geometry by importing shapes from Blender, or using the built-in box primitive maker.'
       }
     }, {
+      id: 'basic-hud',
+      name: 'Edit the HUD',
+      dependencies: ['objects'],
+      content: {
+        description: 'Add a simple heads-up display on top of the game display'
+      }
+    }, {
+      id: 'datablocks',
+      name: 'Datablocks',
+      dependencies: ['objects'],
+      content: {
+        description: 'Datablocks are a fundamental concept in Torque 3D. Learn how to use them when you create all sorts of objects.'
+      }
+    }, {
       id: 'objects',
       name: 'Creating objects',
       dependencies: ['basic-ts'],
@@ -108,15 +121,15 @@ var map = knowledgeMap.create({
       }
     }, {
       id: 'callbacks',
-      name: 'Collisions',
+      name: 'Callbacks',
       dependencies: ['basic-ts'],
       content: {
-        description: ''
+        description: 'Most TorqueScript functionality happens in callbacks. See some simple examples.'
       }
     }, {
       id: 'keybinds',
       name: 'Key bindings',
-      dependencies: ['basic-ts'],
+      dependencies: ['callbacks'],
       content: {
         description: 'Use an `ActionMap` to capture keyboard and mouse input.'
       }
@@ -128,9 +141,16 @@ var map = knowledgeMap.create({
         description: 'Fly around the level as a floating eyeball!'
       }
     }, {
+      id: 'images',
+      name: 'Weapon images',
+      dependencies: ['fps-player'],
+      content: {
+        description: '`ShapeBaseImage`s allow you to mount items like weapons and equipment to your characters.'
+      }
+    }, {
       id: 'items',
       name: 'Items',
-      dependencies: ['datablocks', 'callbacks'],
+      dependencies: ['fps-player'],
       content: {
         description: 'The `Item` class lets you create useful objects for players to collect.'
       }
@@ -144,7 +164,7 @@ var map = knowledgeMap.create({
     }, {
       id: 'fps-player',
       name: 'First-person player',
-      dependencies: ['free-camera'],
+      dependencies: ['keybinds', 'datablocks'],
       content: {
         description: 'Set up a first-person avatar to run around the level.'
       }
@@ -156,19 +176,6 @@ var map = knowledgeMap.create({
         description: 'Get to know how the engine startup sequence works and why `main.cs` looks the way it does.'
       }
     }, {
-      id: 'basic-rift',
-      name: 'Oculus Rift',
-      dependencies: ['compiling', 'basic-ts'],
-      content: {
-        description: 'Set up integeration with the Oculus Rift.'
-      }
-    }, {
-      id: 'compiling',
-      name: 'Compile the engine',
-      content: {
-        description: 'Compile Torque from its source code.'
-      }
-    }, {
       id: 'lan-networking',
       name: 'Host a LAN game',
       dependencies: ['networking'],
@@ -178,28 +185,28 @@ var map = knowledgeMap.create({
     }, {
       id: 'navmesh',
       name: 'Navmeshes',
-      dependencies: ['aiplayer', 'geometry'],
+      dependencies: ['geometry'],
       content: {
-        description: 'Use Recast navmeshes to help your minions navigate around obstacles.'
+        description: 'Learn how to create a Recast navmesh to cover your level.'
       }
     }, {
-      id: 'images',
-      name: 'Weapon images',
-      dependencies: ['fps-player'],
+      id: 'pathfinding',
+      name: 'Pathfinding',
+      dependencies: ['aiplayer', 'navmesh'],
       content: {
-        description: '`ShapeBaseImage`s allow you to mount items like weapons and equipment to your characters.'
+        description: 'Make your minions navigate around obstacles intelligently with navmeshes.'
       }
     }, {
       id: 'basic-fps',
       name: 'A simple FPS',
-      dependencies: ['geometry', 'images', 'items'],
+      dependencies: ['pathfinding', 'images', 'items'],
       content: {
         description: 'Create a very simple FPS game with enemies that try to chase and attack you.'
       }
     }, {
       id: 'basic-rts',
       name: 'A simple RTS',
-      dependencies: ['rts-control', 'navmesh', 'items'],
+      dependencies: ['rts-control', 'rts-camera'],
       content: {
         description: 'Create a very simple FPS game with enemies that try to chase and attack you.'
       }
