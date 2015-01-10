@@ -1,221 +1,177 @@
-var d3 = knowledgeMap.d3;
-
-knowledgeMap.registerPlugin({
-  name: 'warn-no-data',
-  run: function(km) {
-    km.onEvent('renderGraph', function(e) {
-      e.nodes.each(function(id) {
-        var concept = e.graph.node(id).concept;
-        var content = concept.content;
-        if(!content || !content.data) {
-          d3.select(this).select('g').append('text')
-            .classed('danger', true)
-            .attr('dy', '1em')
-            .attr('x', '-20')
-            .text('(!)')
-            .on('click', function(id) {
-            })
-            .append('title')
-              .text( 'No content here yet!');
-        }
-      });
+// Perform a poor man's version of 'transitive reduction' to remove edges that
+// don't affect the graph's connectivity.
+var tredPlugin = function(km) {
+  km.onPreLayout(function(c, g) {
+    var remove = [];
+    g.eachEdge(function(e, u, v) {
+      // Save edge data.
+      var s = g.source(e);
+      var t = g.target(e);
+      var d = g.edge(e);
+      // Remove edge temporarily.
+      g.delEdge(e);
+      // Check reachability without edge.
+      var dists = knowledgeMap.graphlib.alg.dijkstra(g, u);
+      if(dists[v].distance === Number.POSITIVE_INFINITY) {
+        // Re-add edge.
+        g.addEdge(e, s, t, d);
+      }
     });
-  }
-});
+  });
+};
 
-var map = knowledgeMap.create({
-  layout: {
-    verticalSpace: 100,
-    direction: 'BT'
-  },
-  plugins: ['click-events', 'warn-no-data'],
-  graph: {
-    concepts: [{
-      id: 'setup',
-      name: 'Get set up',
-      content: {
-        description: 'Download and run a binary distribution of Torque 3D.'
-      }
-    }, {
-      id: 'compiling',
-      name: 'Compile the engine',
-      content: {
-        description: 'Compile Torque from its source code.'
-      }
-    }, {
-      id: 'basic-rift',
-      name: 'Oculus Rift',
-      dependencies: ['compiling', 'basic-ts'],
-      content: {
-        description: 'Set up integeration with the Oculus Rift.'
-      }
-    }, {
-      id: 'basic-ts',
-      name: 'Basic TorqueScript',
-      dependencies: ['setup'],
-      content: {
-        description: 'Learn the basics of TorqueScript, the language you\'ll use throughout this series, and how the example application is structured.'
-      }
-    }, {
-      id: 'httpobject',
-      name: 'Talk to a server',
-      dependencies: ['objects'],
-      content: {
-        description: 'Use the `HTTPObject` class to interact with a remote server.'
-      }
-    }, {
-      id: 'networking',
-      name: 'Networking',
-      dependencies: ['startup'],
-      content: {
-        description: 'Add networking to your game!'
-      }
-    }, {
-      id: 'basic-gui',
-      name: 'Make a main menu',
-      dependencies: ['startup'],
-      content: {
-        description: 'Start your game in a main menu, not a 3D world view.'
-      }
-    }, {
-      id: 'rts-control',
-      name: 'RTS unit control',
-      dependencies: ['basic-hud', 'pathfinding'],
-      content: {
-        description: 'Select and control NPCs from an overhead camera.'
-      }
-    }, {
-      id: 'aiplayer',
-      name: 'Non-player characters',
-      dependencies: ['datablocks'],
-      content: {
-        description: 'Use the `AIPlayer` class to create NPCs that wander randomly.'
-      }
-    }, {
-      id: 'geometry',
-      name: 'Build a level',
-      dependencies: ['objects'],
-      content: {
-        description: 'Build level geometry by importing shapes from Blender, or using the built-in box primitive maker.'
-      }
-    }, {
-      id: 'basic-hud',
-      name: 'Edit the HUD',
-      dependencies: ['objects'],
-      content: {
-        description: 'Add a simple heads-up display on top of the game display'
-      }
-    }, {
-      id: 'datablocks',
-      name: 'Datablocks',
-      dependencies: ['objects'],
-      content: {
-        description: 'Datablocks are a fundamental concept in Torque 3D. Learn how to use them when you create all sorts of objects.'
-      }
-    }, {
-      id: 'objects',
-      name: 'Creating objects',
-      dependencies: ['basic-ts'],
-      content: {
-        description: 'Load some simple objects into the game world.'
-      }
-    }, {
-      id: 'callbacks',
-      name: 'Callbacks',
-      dependencies: ['basic-ts'],
-      content: {
-        description: 'Most TorqueScript functionality happens in callbacks. See some simple examples.'
-      }
-    }, {
-      id: 'keybinds',
-      name: 'Key bindings',
-      dependencies: ['callbacks'],
-      content: {
-        description: 'Use an `ActionMap` to capture keyboard and mouse input.'
-      }
-    }, {
-      id: 'free-camera',
-      name: 'Free camera',
-      dependencies: ['datablocks', 'keybinds'],
-      content: {
-        description: 'Fly around the level as a floating eyeball!'
-      }
-    }, {
-      id: 'images',
-      name: 'Weapon images',
-      dependencies: ['fps-player'],
-      content: {
-        description: '`ShapeBaseImage`s allow you to mount items like weapons and equipment to your characters.'
-      }
-    }, {
-      id: 'items',
-      name: 'Items',
-      dependencies: ['fps-player'],
-      content: {
-        description: 'The `Item` class lets you create useful objects for players to collect.'
-      }
-    }, {
-      id: 'rts-camera',
-      name: 'RTS camera',
-      dependencies: ['free-camera'],
-      content: {
-        description: 'Make a moving overhead camera.'
-      }
-    }, {
-      id: 'fps-player',
-      name: 'First-person player',
-      dependencies: ['keybinds', 'datablocks'],
-      content: {
-        description: 'Set up a first-person avatar to run around the level.'
-      }
-    }, {
-      id: 'startup',
-      name: 'Understanding startup',
-      dependencies: ['basic-ts'],
-      content: {
-        description: 'Get to know how the engine startup sequence works and why `main.cs` looks the way it does.'
-      }
-    }, {
-      id: 'lan-networking',
-      name: 'Host a LAN game',
-      dependencies: ['networking'],
-      content: {
-        description: 'Make your game visible to other clients on the same LAN.'
-      }
-    }, {
-      id: 'navmesh',
-      name: 'Navmeshes',
-      dependencies: ['geometry'],
-      content: {
-        description: 'Learn how to create a Recast navmesh to cover your level.'
-      }
-    }, {
-      id: 'pathfinding',
-      name: 'Pathfinding',
-      dependencies: ['aiplayer', 'navmesh'],
-      content: {
-        description: 'Make your minions navigate around obstacles intelligently with navmeshes.'
-      }
-    }, {
-      id: 'basic-fps',
-      name: 'A simple FPS',
-      dependencies: ['pathfinding', 'images', 'items'],
-      content: {
-        description: 'Create a very simple FPS game with enemies that try to chase and attack you.'
-      }
-    }, {
-      id: 'basic-rts',
-      name: 'A simple RTS',
-      dependencies: ['rts-control', 'rts-camera'],
-      content: {
-        description: 'Create a very simple FPS game with enemies that try to chase and attack you.'
-      }
-    }]
-  },
-});
+// Add functions to highlight graph nodes and edges.
+var highlightPlugin = function(km) {
+  var d3 = knowledgeMap.d3;
+  km.removeHighlight = function(css) {
+    this.element.selectAll('.'+css).classed(css, false);
+    return this;
+  };
 
-map.onEvent('clickConcept', function(e) {
-  var c = e.concept;
-  $('#current-concept h2').text(c.name);
-  $('#current-concept p').text(c.content.description);
+  km.highlightNode = function(id, css) {
+    if(this.graph.hasNode(id)) {
+      d3.select('#'+id).classed(css, true);
+    }
+    return this;
+  };
+
+  km.highlightEdges = function(id, css) {
+    if(this.graph.hasNode(id)) {
+      this.graph.incidentEdges(id).forEach(function(edge) {
+        d3.select('#'+edge).classed(css, true);
+      });
+    }
+    return this;
+  };
+};
+
+// Highlight nodes when moused over, and the edges connected to them.
+var mouseHighlightPlugin = function(km) {
+  km.renderNodes.onNew(function(nodes) {
+    var css = 'active';
+    nodes
+      .on('mouseover', function(d) {
+        km.highlightNode(d.id, css)
+          .highlightEdges(d.id, css);
+      })
+      .on('mouseout', function(d) {
+        km.removeHighlight(css);
+      });
+  });
+};
+
+// Add functions to pan around the graph.
+var panToPlugin = function(km) {
+  var d3 = knowledgeMap.d3;
+
+  km.panTo = function(id, duration) {
+    var x, y, scale;
+    if(typeof(id) == 'object') {
+      x = id.x;
+      y = id.y;
+      scale = id.scale;
+    } else if(this.graph.hasNode(id)) {
+      var n = this.graph.node(id);
+      x = n.layout.x;
+      y = n.layout.y;
+      scale = 1;
+    } else {
+      return;
+    }
+
+    var box = this.element.node().parentNode.getBBox();
+    x = x * scale - box.width/2;
+    y = y * scale - box.height/2;
+
+    if(!duration) {
+      this.zoom
+        .translate([-x, -y])
+        .scale(scale)
+        .event(this.element);
+    } else {
+      this.element.transition()
+        .duration(duration)
+        .call(this.zoom.scale(scale).event)
+        .call(this.zoom.translate([-x, -y]).event);
+    }
+    return this;
+  };
+
+  var bb, minZoom;
+  km.onPostRender(function() {
+    // Calculate the maximum zoom factor based on the width of
+    // the element and the graph.
+    var svgWidth = km.container.node().getBoundingClientRect().width;
+    bb = km.element.node().getBBox()
+    minZoom = Math.max(0.1, Math.min(0.5, svgWidth / (bb.width + 100)));
+    km.zoom.scaleExtent([minZoom, 1]);
+  });
+
+  km.panOut = function(duration) {
+    this.panTo({
+      x: bb.width/2,
+      y: bb.height/2,
+      scale: minZoom
+    }, duration);
+    return this;
+  };
+};
+
+// Pan to a node when it is clicked.
+var panOnClickPlugin = function(km) {
+  km.renderNodes.onNew(function(nodes) {
+    nodes.on('click', function(n) {
+      km.panTo(n.id, 500);
+    });
+  });
+};
+
+// Make a simple knowledge map.
+knowledgeMap.create({
+  resources: [{
+    id: 'what-is-torquescript',
+    label: 'What is TorqueScript?',
+    teaches: ['What TorqueScript is']
+  }, {
+    id: 't3d-bones-main-file',
+    label: 't3d-bones: the main file',
+    requires: ['Basic TorqueScript', 'What TorqueScript is', 'What a game engine is'],
+    teaches: ['Engine startup']
+  }, {
+    id: 'what-is-a-game-engine',
+    label: 'What is a game engine?',
+    teaches: ['What a game engine is']
+  }, {
+    id: 'creating-a-main-menu',
+    label: 't3d-bones: creating a main menu',
+    requires: ['Basic TorqueScript', 'Engine startup'],
+    teaches: ['GUIs in TorqueScript']
+  }, {
+    id: 't3d-bones-convex-shapes',
+    label: 't3d-bones: creating convex shapes',
+    requires: ['Basic TorqueScript'],
+    teaches: ['The ConvexShape class']
+  }, {
+    id: 'what-is-torque',
+    label: 'What is Torque?',
+    teaches: ['What a game engine is']
+  }],
+
+  plugins: [
+    tredPlugin,
+    highlightPlugin,
+    mouseHighlightPlugin,
+    panToPlugin,
+    panOnClickPlugin,
+
+    // Finally, set some layout options that we don't really want to define a
+    // plugin for.
+    function(km) {
+      km.onPreLayout(function(config) {
+        config.rankSep(50);
+        config.nodeSep(20);
+        config.rankDir('BT');
+      });
+    }
+  ]
 });
