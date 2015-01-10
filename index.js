@@ -107,11 +107,11 @@ var panToPlugin = function(km) {
     km.zoom.scaleExtent([minZoom, 1]);
   });
 
-  km.panOut = function(duration) {
+  km.panOut = function(duration, zoom) {
     this.panTo({
       x: bb.width/2,
       y: bb.height/2,
-      scale: minZoom
+      scale: zoom ? zoom : minZoom
     }, duration);
     return this;
   };
@@ -171,6 +171,9 @@ knowledgeMap.create({
         config.rankSep(50);
         config.nodeSep(20);
         config.rankDir('BT');
+      });
+      km.onPostRender(function() {
+        km.panOut(0, 1);
       });
     }
   ]
