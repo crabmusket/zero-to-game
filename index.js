@@ -37,13 +37,15 @@
       panToPlugin,
       panOnClickPlugin,
       updateSidebarOnClickPlugin,
+      resourceAppearancePlugin,
+      conceptAppearancePlugin,
 
       // Finally, set some layout options that we don't really want to define a
       // plugin for.
       function(km) {
         km.onPreLayout(function(config) {
-          config.rankSep(50);
-          config.nodeSep(20);
+          config.rankSep(40);
+          config.nodeSep(30);
           config.rankDir('BT');
         });
         km.onPostRender(function() {
@@ -194,4 +196,72 @@
       return this;
     };
   };
+
+  function resourceAppearancePlugin(km) {
+    var d3 = knowledgeMap.d3;
+    var inner = 30, outer = 40;
+    var arcOffset = 0.4;
+    var topArc = d3.svg.arc()
+      .innerRadius(inner)
+      .outerRadius(outer)
+      .startAngle(-Math.PI/2 + arcOffset)
+      .endAngle(Math.PI/2 - arcOffset);
+    var bottomArc = d3.svg.arc()
+      .innerRadius(inner)
+      .outerRadius(outer)
+      .startAngle(Math.PI/2 + arcOffset)
+      .endAngle(3*Math.PI/2 - arcOffset);
+
+    km.renderNodes.onNew(function(nodes) {
+      var ns = nodes.filter('.resource');
+
+      // Insert a circle and two arcs to make the broken ring.
+      var g = ns.insert('g', 'text').classed('ring', true);
+      g.append('circle').attr('r', outer);
+      g.append('path').attr("d", topArc);
+      g.append('path').attr("d", bottomArc);
+
+      // Insert an icon!
+      // Still no idea how to make the icons show in the SVG :(.
+      /*var i = ns.insert('text', 'text.label')
+        .attr('font-family', 'FontAwesome')
+        .attr('font-size', '40px')
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', 'central')
+        .classed('icon', true)
+        .text(function(d) { return '\uf007' }); */
+
+      // Mouse events to spin the ring.
+      var duration = 500;
+      ns.on('mouseover.resource', function() {
+        d3.select(this).select('g.ring').transition()
+          .duration(duration)
+          .attr('transform', 'rotate(180)');
+      });
+      ns.on('mouseout.resource', function() {
+        d3.select(this).select('g.ring').transition()
+          .duration(duration)
+          .attr('transform', 'rotate(0)');
+      });
+    });
+  }
+
+  function conceptAppearancePlugin(km) {
+    km.renderNodes.onNew(function(nodes) {
+      nodes.filter('.concept')
+        .insert('rect', 'text');
+    });
+
+    var padding = {width: 10, height: 10};
+    km.renderNodes.onUpdate(function(nodes) {
+      nodes.filter('.concept').select('rect')
+        // Offset rects so they're centred.
+        .attr('x', function(d) { return -d.baseWidth/2 - 5; })
+        .attr('y', function(d) { return -d.baseHeight/2 - 3; })
+        // Add a bit of padding.
+        .attr('width', function(d) { return d.baseWidth + padding.width; })
+        .attr('height', function(d) { return d.baseHeight + padding.height; })
+    })
+    .onUpdate(km.calculateNodeSizes);
+  }
 }());

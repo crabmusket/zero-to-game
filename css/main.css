@@ -75,3 +75,24 @@ svg .danger {
 
 .goals > li       > h3 > i { display: none; }
 .goals > li:hover > h3 > i { display: inline; }
+
+.resource {
+  cursor: pointer;
+}
+
+.resource .ring circle {
+  fill: white;
+  opacity: 0;
+  pointer-events: all;
+}
+.resource .ring path {
+  fill: #efb6b6;
+}
+
+.edgePath path {
+  stroke: #efb6b6;
+}
+
+#arrowhead {
+  fill: #efb6b6 !important;
+}
