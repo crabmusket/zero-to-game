@@ -4,30 +4,30 @@
     resources: [{
       id: 'what-is-torquescript',
       label: 'What is TorqueScript?',
-      teaches: ['What TorqueScript is']
+      teaches: ['what TorqueScript is']
+    }, {
+      id: 'what-is-torque',
+      label: 'What is Torque?',
+      teaches: ['what a game engine is']
     }, {
       id: 't3d-bones-main-file',
       label: 't3d-bones: the main file',
-      requires: ['Basic TorqueScript', 'What TorqueScript is', 'What a game engine is'],
-      teaches: ['Engine startup']
+      requires: ['basic TorqueScript', 'what TorqueScript is', 'what a game engine is'],
+      teaches: ['engine startup']
     }, {
       id: 'what-is-a-game-engine',
       label: 'What is a game engine?',
-      teaches: ['What a game engine is']
+      teaches: ['what a game engine is']
     }, {
       id: 'creating-a-main-menu',
       label: 't3d-bones: creating a main menu',
-      requires: ['Basic TorqueScript', 'Engine startup'],
+      requires: ['basic TorqueScript', 'engine startup'],
       teaches: ['GUIs in TorqueScript']
     }, {
       id: 't3d-bones-convex-shapes',
       label: 't3d-bones: creating convex shapes',
-      requires: ['Basic TorqueScript'],
-      teaches: ['The ConvexShape class']
-    }, {
-      id: 'what-is-torque',
-      label: 'What is Torque?',
-      teaches: ['What a game engine is']
+      requires: ['basic TorqueScript'],
+      teaches: ['the ConvexShape class']
     }],
 
     plugins: [
