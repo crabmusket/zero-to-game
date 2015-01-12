@@ -36,6 +36,7 @@
       mouseHighlightPlugin,
       panToPlugin,
       panOnClickPlugin,
+      updateSidebarOnClickPlugin,
 
       // Finally, set some layout options that we don't really want to define a
       // plugin for.
@@ -46,11 +47,34 @@
           config.rankDir('BT');
         });
         km.onPostRender(function() {
-          km.panOut(0, 1);
+          km.panTo('what-is-torque');
         });
       }
     ]
   });
+
+  // Pan to a node when it is clicked.
+  function panOnClickPlugin(km) {
+    km.renderNodes.onNew(function(nodes) {
+      nodes.on('click.pan', function(n) {
+        km.panTo(n.id, 500);
+      });
+    });
+  };
+
+  // Update the sidebar when a node is clicked.
+  function updateSidebarOnClickPlugin(km) {
+    km.renderNodes.onNew(function(nodes) {
+      nodes.on('click.sidebar', function(n) {
+        if (n.label && n.label.length) {
+          $('#resource-title').html(n.label);
+        }
+        if (n.description && n.description.length) {
+          $('#resource-description').html(n.description);
+        }
+      });
+    });
+  };
 
   // Perform a poor man's version of 'transitive reduction' to remove edges that
   // don't affect the graph's connectivity.
@@ -169,14 +193,5 @@
       }, duration);
       return this;
     };
-  };
-
-  // Pan to a node when it is clicked.
-  function panOnClickPlugin(km) {
-    km.renderNodes.onNew(function(nodes) {
-      nodes.on('click', function(n) {
-        km.panTo(n.id, 500);
-      });
-    });
   };
 }());
