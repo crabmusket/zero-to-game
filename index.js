@@ -1,7 +1,60 @@
 (function() {
+  // Make a simple knowledge map.
+  knowledgeMap.create({
+    resources: [{
+      id: 'what-is-torquescript',
+      label: 'What is TorqueScript?',
+      teaches: ['What TorqueScript is']
+    }, {
+      id: 't3d-bones-main-file',
+      label: 't3d-bones: the main file',
+      requires: ['Basic TorqueScript', 'What TorqueScript is', 'What a game engine is'],
+      teaches: ['Engine startup']
+    }, {
+      id: 'what-is-a-game-engine',
+      label: 'What is a game engine?',
+      teaches: ['What a game engine is']
+    }, {
+      id: 'creating-a-main-menu',
+      label: 't3d-bones: creating a main menu',
+      requires: ['Basic TorqueScript', 'Engine startup'],
+      teaches: ['GUIs in TorqueScript']
+    }, {
+      id: 't3d-bones-convex-shapes',
+      label: 't3d-bones: creating convex shapes',
+      requires: ['Basic TorqueScript'],
+      teaches: ['The ConvexShape class']
+    }, {
+      id: 'what-is-torque',
+      label: 'What is Torque?',
+      teaches: ['What a game engine is']
+    }],
+
+    plugins: [
+      tredPlugin,
+      highlightPlugin,
+      mouseHighlightPlugin,
+      panToPlugin,
+      panOnClickPlugin,
+
+      // Finally, set some layout options that we don't really want to define a
+      // plugin for.
+      function(km) {
+        km.onPreLayout(function(config) {
+          config.rankSep(50);
+          config.nodeSep(20);
+          config.rankDir('BT');
+        });
+        km.onPostRender(function() {
+          km.panOut(0, 1);
+        });
+      }
+    ]
+  });
+
   // Perform a poor man's version of 'transitive reduction' to remove edges that
   // don't affect the graph's connectivity.
-  var tredPlugin = function(km) {
+  function tredPlugin(km) {
     km.onPreLayout(function(c, g) {
       var remove = [];
       g.eachEdge(function(e, u, v) {
@@ -22,7 +75,7 @@
   };
 
   // Add functions to highlight graph nodes and edges.
-  var highlightPlugin = function(km) {
+  function highlightPlugin(km) {
     var d3 = knowledgeMap.d3;
     km.removeHighlight = function(css) {
       this.element.selectAll('.'+css).classed(css, false);
@@ -47,7 +100,7 @@
   };
 
   // Highlight nodes when moused over, and the edges connected to them.
-  var mouseHighlightPlugin = function(km) {
+  function mouseHighlightPlugin(km) {
     km.renderNodes.onNew(function(nodes) {
       var css = 'active';
       nodes
@@ -62,7 +115,7 @@
   };
 
   // Add functions to pan around the graph.
-  var panToPlugin = function(km) {
+  function panToPlugin(km) {
     var d3 = knowledgeMap.d3;
 
     km.panTo = function(id, duration) {
@@ -119,64 +172,11 @@
   };
 
   // Pan to a node when it is clicked.
-  var panOnClickPlugin = function(km) {
+  function panOnClickPlugin(km) {
     km.renderNodes.onNew(function(nodes) {
       nodes.on('click', function(n) {
         km.panTo(n.id, 500);
       });
     });
   };
-
-  // Make a simple knowledge map.
-  knowledgeMap.create({
-    resources: [{
-      id: 'what-is-torquescript',
-      label: 'What is TorqueScript?',
-      teaches: ['What TorqueScript is']
-    }, {
-      id: 't3d-bones-main-file',
-      label: 't3d-bones: the main file',
-      requires: ['Basic TorqueScript', 'What TorqueScript is', 'What a game engine is'],
-      teaches: ['Engine startup']
-    }, {
-      id: 'what-is-a-game-engine',
-      label: 'What is a game engine?',
-      teaches: ['What a game engine is']
-    }, {
-      id: 'creating-a-main-menu',
-      label: 't3d-bones: creating a main menu',
-      requires: ['Basic TorqueScript', 'Engine startup'],
-      teaches: ['GUIs in TorqueScript']
-    }, {
-      id: 't3d-bones-convex-shapes',
-      label: 't3d-bones: creating convex shapes',
-      requires: ['Basic TorqueScript'],
-      teaches: ['The ConvexShape class']
-    }, {
-      id: 'what-is-torque',
-      label: 'What is Torque?',
-      teaches: ['What a game engine is']
-    }],
-
-    plugins: [
-      tredPlugin,
-      highlightPlugin,
-      mouseHighlightPlugin,
-      panToPlugin,
-      panOnClickPlugin,
-
-      // Finally, set some layout options that we don't really want to define a
-      // plugin for.
-      function(km) {
-        km.onPreLayout(function(config) {
-          config.rankSep(50);
-          config.nodeSep(20);
-          config.rankDir('BT');
-        });
-        km.onPostRender(function() {
-          km.panOut(0, 1);
-        });
-      }
-    ]
-  });
 }());
